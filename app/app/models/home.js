@@ -1,6 +1,6 @@
 module.exports = {
     getHome : function(connection, callback){
-        let sql = 'arrumar sql;'
+        let sql = 'select * from ponto_turistico'
         connection.query(sql,callback)
     }
 }
