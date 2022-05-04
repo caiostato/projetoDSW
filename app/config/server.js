@@ -1,15 +1,28 @@
 const express = require('express')
 const consign = require('consign')
+const session = require('express-session');
+
 
 let app = express()
 let port = process.env.PORT || 8000 
 
 app.listen(port,function(){
-    console.log("servidor rodando na porta: "+port)
+    console.log("Aplicação rodando na porta: "+port)
 })
 
 app.set('views', './app/views')
 app.set('view engine', 'ejs')
+
+app.use(session({
+	secret: 'secret',
+    userId: '',
+    loggedin: false,
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 consign()
     .then('config/dbserver.js')
