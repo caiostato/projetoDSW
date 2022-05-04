@@ -10,6 +10,15 @@ module.exports = {
         })
 
     },
+    error: function(app){
+
+        let controller = require('../controllers/error')
+
+        app.get('/error', (req,res)=>{
+        controller.loadPage(app,req,res)
+        })
+
+    },
     pontos: function(app){
 
         let controller = require('../controllers/pontos')
@@ -51,8 +60,14 @@ module.exports = {
 
         //ROTA AUTH SIGN IN
         app.post('/user/signin/auth',[
-            check('email').isEmail(),
-            check('password').isLength({ min:8 })
+            check('nome', 'Nome muito curto').isLength({min:5}),
+            check('email', 'E-mail invalido').isEmail(),
+            check('password', 'Senha muito curta').isLength({ min:2 }),
+            check('passwordConfirmation','Confirmação de Senha muito curta').isLength({ min:2 }),
+            check('date').isDate(),
+            check('address', 'Endereço muito curto').isLength({ min:8 }),
+            check('img','Não é URL').isURL(),
+            
         ], (req,res)=>{
             const errors = validationResult(req)
             controller.authSignin(app,req,res,errors)
