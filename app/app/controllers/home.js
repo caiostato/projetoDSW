@@ -18,7 +18,7 @@ module.exports.listar = function(app,req,res) {
             // let pagina = "<h1>Erro encontrado</h1><h2>"+error+"</h2>";
             // res.status(500).send(pagina);
 
-            res.render('error.ejs')
+            res.redirect('error.ejs',error)
         }
         
     })
