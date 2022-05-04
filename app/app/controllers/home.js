@@ -7,7 +7,7 @@ module.exports.listar = function(app,req,res) {
 
     getHome(connection, function(error, result){
         if(!error){
-            res.render('home.ejs',{obrasdearte: result})
+            res.render('home.ejs',{pontosTuristicos: result})
         }
         else {
             logger.log({
