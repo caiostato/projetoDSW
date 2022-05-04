@@ -1,4 +1,4 @@
-const { authLogin,authSignin } = require('../models/user');
+const { authLogin,authSignin, checkId } = require('../models/user');
 const logger = require('../../config/logger')
 
 module.exports.loadLogin = function(app,req,res) {
@@ -19,10 +19,22 @@ module.exports.authLogin = function(app,req,res) {
         email: data.email,
         password: data.password
     }
-
     authLogin(user, connection, function(error, result){
         if(!error){
-            res.render('signin.ejs')
+            //caminho sem erro
+            if(result.length > 0){
+                
+                checkId(user,connection,function(error,result){
+                    let userId = result[0].user_id
+                    req.session.userId = `${userId}`;
+                })
+                app.session.loggedin = true
+
+                res.redirect('/')
+            }
+            else{
+                res.redirect('/error')
+            }
         }
         else {
             logger.log({
@@ -40,9 +52,19 @@ module.exports.authSignin = function(app,req,res,errors) {
 
     let connection = app.config.dbserver()
 
-    authSignin(connection, function(error, result){
+    let data = req.body
+    let user = {
+        nome:data.nome,
+        password:data.password,
+        email:data.email,
+        date:data.date,
+        address:data.address,
+        img:data.img,
+    }
+
+    authSignin(user, connection, function(error, result){
         if(!error){
-            res.render('signin.ejs')
+            res.redirect('/')
         }
         else {
             logger.log({
@@ -50,7 +72,7 @@ module.exports.authSignin = function(app,req,res,errors) {
                 message: error.message
             })
 
-            res.render('error.ejs')
+            res.render('error.ejs',error)
         }
         
     })
