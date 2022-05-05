@@ -12,34 +12,38 @@ module.exports.savePonto = function(app,req,res,errors) {
 
     let data = req.body
 
-    let ponto = {
-        nome: data.nome,
-        cep: data.cep,
-        endereco: data.endereco,
-        bairro: data.bairro,
-        estado: data.estado,
-        cidade: data.cidade,
-        imagem:data.imagem
-    }
+    if(req.session.loggedin){
+        
+        let ponto = {
+            nome: data.nome,
+            cep: data.cep,
+            endereco: data.endereco,
+            bairro: data.bairro,
+            estado: data.estado,
+            cidade: data.cidade,
+            imagem:data.imagem,
+            user_id:req.session.userId
+        }
 
-    //FUNCAO DO MODEL QUE ENVIA PARA O MYSQL
-    if(errors.errors.length > 0){
+        //FUNCAO DO MODEL QUE ENVIA PARA O MYSQL
+        if(errors.errors.length > 0){
 
-        setPonto(ponto,connection, function(error, result){
-            if(!error){
-                res.redirect('/')
-            }
-            else {
-                logger.log({
-                    level: 'error',
-                    message: error.message
-                })
-                res.render('error.ejs',{error:error})
-            }
-            
-        })
-    }
-    else{
-        res.render('ponto/cadastrar.ejs',{error:errors})
+            setPonto(ponto,connection, function(error, result){
+                if(!error){
+                    res.redirect('/')
+                }
+                else {
+                    logger.log({
+                        level: 'error',
+                        message: error.message
+                    })
+                    res.render('error.ejs',{error:error})
+                }
+                
+            })
+        }
+        else{
+            res.render('ponto/cadastrar.ejs',{error:errors})
+        }
     }
 }
