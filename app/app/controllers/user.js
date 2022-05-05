@@ -2,14 +2,14 @@ const { authLogin,authSignin, checkId } = require('../models/user');
 const logger = require('../../config/logger')
 
 module.exports.loadLogin = function(app,req,res) {
-    res.render('login.ejs')
+    res.render('user/login.ejs')
 }
 
 module.exports.loadSignin = function(app,req,res) {
-    res.render('signin.ejs')
+    res.render('user/signin.ejs')
 }
 
-module.exports.authLogin = function(app,req,res) {
+module.exports.authLogin = function(app,req,res,errors) {
 
     let connection = app.config.dbserver()
 
@@ -33,7 +33,8 @@ module.exports.authLogin = function(app,req,res) {
                 res.redirect('/')
             }
             else{
-                res.redirect('/error')
+                // res.render('login.ejs',errors)
+                res.render('error.ejs')
             }
         }
         else {
@@ -62,18 +63,21 @@ module.exports.authSignin = function(app,req,res,errors) {
         img:data.img,
     }
 
-    authSignin(user, connection, function(error, result){
-        if(!error){
-            res.redirect('/')
-        }
-        else {
-            logger.log({
-                level: 'error',
-                message: error.message
-            })
-
-            res.render('error.ejs',error)
-        }
-        
-    })
+    if(errors.errors.length > 0){
+        authSignin(user, connection, function(error, result){
+            if(!error){
+                res.redirect('/')
+            }
+            else {
+                logger.log({
+                    level: 'error',
+                    message: error.message
+                })
+                res.render('error.ejs',{error:error})
+            }
+        })
+    }
+    else{
+        res.render('user/signin.ejs',{error:errors})
+    }
 }

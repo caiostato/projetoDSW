@@ -3,10 +3,10 @@ const logger = require('../../config/logger')
 
 module.exports.loadPage = function(app,req,res) {
     // ROTA GET CADASTRAR PONTO
-    res.render('pontoCadastrar.ejs')
+    res.render('ponto/cadastrar.ejs')
 }
 
-module.exports.savePonto = function(app,req,res) {
+module.exports.savePonto = function(app,req,res,errors) {
     //ROTA POST PONTO
     let connection = app.config.dbserver()
 
@@ -23,18 +23,23 @@ module.exports.savePonto = function(app,req,res) {
     }
 
     //FUNCAO DO MODEL QUE ENVIA PARA O MYSQL
-    setPonto(ponto,connection, function(error, result){
-        if(!error){
-            res.render('signin.ejs')
-        }
-        else {
-            logger.log({
-                level: 'error',
-                message: error.message
-            })
+    if(errors.errors.length > 0){
 
-            res.render('error.ejs')
-        }
-        
-    })
+        setPonto(ponto,connection, function(error, result){
+            if(!error){
+                res.redirect('/')
+            }
+            else {
+                logger.log({
+                    level: 'error',
+                    message: error.message
+                })
+                res.render('error.ejs',{error:error})
+            }
+            
+        })
+    }
+    else{
+        res.render('ponto/cadastrar.ejs',{error:errors})
+    }
 }
