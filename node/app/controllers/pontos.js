@@ -12,8 +12,11 @@ module.exports.savePonto = function(app,req,res,errors) {
 
     let data = req.body
 
+    console.log('enter')
     if(req.session.loggedin){
         
+        console.log('login')
+
         let ponto = {
             nome: data.nome,
             cep: data.cep,

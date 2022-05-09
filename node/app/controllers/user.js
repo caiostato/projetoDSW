@@ -28,7 +28,7 @@ module.exports.authLogin = function(app,req,res,errors) {
                     let userId = result[0].user_id
                     req.session.userId = `${userId}`;
                 })
-                app.session.loggedin = true
+                req.session.loggedin = true
 
                 res.redirect('/')
             }
@@ -78,6 +78,7 @@ module.exports.authSignin = function(app,req,res,errors) {
         })
     }
     else{
+        console.log(errors)
         res.render('user/signin.ejs',{error:errors})
     }
 }

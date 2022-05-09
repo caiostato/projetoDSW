@@ -36,6 +36,7 @@ module.exports = {
             check('estado', 'Estado muito curto').isLength({ min:2,max:2}),
             check('img','Não é URL').isURL(),
         ], (req,res)=>{
+            console.log('post')
             const errors = validationResult(req)
             controller.savePonto(app,req,res,errors)
         })
@@ -60,7 +61,7 @@ module.exports = {
         //ROTA AUTH SIGN IN
         app.post('/user/signin/auth',[
             check('nome', 'Nome muito curto').isLength({min:5}),
-            check('email', 'E-mail invalido').isEmail(),
+            ('email', 'E-mail invalido'),
             check('password', 'Senha muito curta').isLength({ min:2 }),
             check('passwordConfirmation','Confirmação de Senha muito curta').isLength({ min:2 }),
             check('date').isDate(),
