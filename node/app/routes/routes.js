@@ -5,16 +5,8 @@ module.exports = {
 
         let controller = require('../controllers/home')
 
-        app.get('/', (req,res)=>{
+        app.get('/api/pontos', (req,res)=>{
         controller.listar(app,req,res)
-        })
-    },
-    error: function(app){
-
-        let controller = require('../controllers/error')
-
-        app.get('/error', (req,res)=>{
-        controller.loadPage(app,req,res)
         })
     },
     pontos: function(app){
@@ -23,9 +15,9 @@ module.exports = {
         const { check, validationResult} = require('express-validator')
 
         //ROTA CARREGAR CADASTRAR PONTO PAGE
-        app.get('/ponto/cadastrar', (req,res)=>{
-        controller.loadPage(app,req,res)
-        }),
+        // app.get('/pontos/cadastrar', (req,res)=>{
+        // controller.loadPage(app,req,res)
+        // }),
         //ROTA ENVIAR DADOS SOBRE CADASTRO DO PONTO
         app.post('/pontos/cadastrar/save',[
             check('nome', 'Nome muito curto').isLength({min:5}),
@@ -47,13 +39,14 @@ module.exports = {
         const { check, validationResult} = require('express-validator')
 
         //ROTA LOGIN USER
-        app.get('/user/login', (req,res)=>{
-        controller.loadLogin(app,req,res)
-        }),
-        //ROTA SIGN IN USER
-        app.get('/user/signin', (req,res)=>{
-            controller.loadSignin(app,req,res)
-        }),
+        // app.get('/user/login', (req,res)=>{
+        // controller.loadLogin(app,req,res)
+        // }),
+        // //ROTA SIGN IN USER
+        // app.get('/user/signin', (req,res)=>{
+        //     controller.loadSignin(app,req,res)
+        // }),
+        
         //ROTA AUTH LOGIN
         app.post('/user/login/auth', (req,res)=>{
             controller.authLogin(app,req,res)
@@ -61,7 +54,7 @@ module.exports = {
         //ROTA AUTH SIGN IN
         app.post('/user/signin/auth',[
             check('nome', 'Nome muito curto').isLength({min:5}),
-            ('email', 'E-mail invalido'),
+            check('email', 'E-mail invalido'),
             check('password', 'Senha muito curta').isLength({ min:2 }),
             check('passwordConfirmation','Confirmação de Senha muito curta').isLength({ min:2 }),
             check('date').isDate(),

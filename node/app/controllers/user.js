@@ -1,13 +1,14 @@
-const { authLogin,authSignin, checkId } = require('../models/user');
+const { authLogin, authSignin, checkId } = require('../models/user');
 const logger = require('../../config/logger')
 
-module.exports.loadLogin = function(app,req,res) {
-    res.render('user/login.ejs')
-}
+// app.gets
+// module.exports.loadLogin = function(app,req,res) {
+//     res.render('user/login.ejs')
+// }
 
-module.exports.loadSignin = function(app,req,res) {
-    res.render('user/signin.ejs')
-}
+// module.exports.loadSignin = function(app,req,res) {
+//     res.render('user/signin.ejs')
+// }
 
 module.exports.authLogin = function(app,req,res,errors) {
 
@@ -23,18 +24,22 @@ module.exports.authLogin = function(app,req,res,errors) {
         if(!error){
             //caminho sem erro
             if(result.length > 0){
-                
                 checkId(user,connection,function(error,result){
                     let userId = result[0].user_id
                     req.session.userId = `${userId}`;
                 })
+
                 req.session.loggedin = true
 
-                res.redirect('/')
+                let session = {
+                  loggedin: true,
+                  userId: req.session.userId
+                }
+
+                res.status(200).send(session) //arrumar codigo 200
             }
             else{
-                // res.render('login.ejs',errors)
-                res.render('error.ejs')
+                res.status(500).send(errors)
             }
         }
         else {
@@ -43,7 +48,7 @@ module.exports.authLogin = function(app,req,res,errors) {
                 message: error.message
             })
 
-            res.render('error.ejs')
+            res.status(400).send(error)
         }
         
     })
@@ -66,19 +71,18 @@ module.exports.authSignin = function(app,req,res,errors) {
     if(errors.errors.length > 0){
         authSignin(user, connection, function(error, result){
             if(!error){
-                res.redirect('/')
+                res.status(200).send('O cadastro foi realizado com sucesso!')
             }
             else {
                 logger.log({
                     level: 'error',
                     message: error.message
                 })
-                res.render('error.ejs',{error:error})
+                res.status(400).send(error)
             }
         })
     }
     else{
-        console.log(errors)
-        res.render('user/signin.ejs',{error:errors})
+        res.status(500).send(errors)
     }
 }
