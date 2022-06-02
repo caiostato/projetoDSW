@@ -6,6 +6,7 @@ const session = require('express-session');
 const dbConnection = require('./dbserver')()
 const app = express()
 const port = process.env.PORT || 8000 
+require('../start/prod')(app)
 
 app.use((req,res,next)=> {
   res.header("Access-Control-Allow-Origin", "*");
