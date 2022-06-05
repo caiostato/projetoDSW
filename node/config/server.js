@@ -22,8 +22,6 @@ app.listen(port,()=>{
 
 app.use(session({
   secret: 'secret',
-  userId: '',
-  loggedin: false,
 	resave: true,
 	saveUninitialized: true
 }));

@@ -1,10 +1,14 @@
 const { authLogin, authSignin, checkId } = require('../models/user');
 const logger = require('../../config/logger')
 
-// app.gets
-// module.exports.loadLogin = function(app,req,res) {
-//     res.render('user/login.ejs')
-// }
+module.exports.checkAuth = function(app,req,res) {
+    const userAuth = {
+        session: req.session.loggedin,
+        userId:req.session.userId
+    }
+
+    res.status(200).send(userAuth)
+}
 
 // module.exports.loadSignin = function(app,req,res) {
 //     res.render('user/signin.ejs')
@@ -26,15 +30,12 @@ module.exports.authLogin = function(app,req,res,errors) {
             if(result.length > 0){
                 checkId(user,connection,function(error,result){
                     let userId = result[0].user_id
-                    req.session.userId = `${userId}`;
+                    req.session.userId = userId
                 })
-
+                
                 req.session.loggedin = true
 
-                let session = {
-                  loggedin: true,
-                  userId: req.session.userId
-                }
+                let session = req.session
 
                 res.status(200).send(session) //arrumar codigo 200
             }

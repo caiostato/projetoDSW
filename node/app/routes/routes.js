@@ -28,7 +28,6 @@ module.exports = {
             check('estado', 'Estado muito curto').isLength({ min:2,max:2}),
             check('img','Não é URL').isURL(),
         ], (req,res)=>{
-            console.log('post')
             const errors = validationResult(req)
             controller.savePonto(app,req,res,errors)
         })
@@ -48,6 +47,9 @@ module.exports = {
         // }),
         
         //ROTA AUTH LOGIN
+        app.get('/user/login/auth',(req,res)=>{
+            controller.checkAuth(app,res,res)
+        }),
         app.post('/user/login/auth', (req,res)=>{
             controller.authLogin(app,req,res)
         }),
@@ -67,5 +69,3 @@ module.exports = {
         })
     },
 }
-
-
