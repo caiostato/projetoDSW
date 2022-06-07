@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { Container } from './styles';
 
 function PlaceItem({ nome, addr, url }) {
-  console.log(url)
   return( 
   <Container>
     <h1>{nome}</h1>

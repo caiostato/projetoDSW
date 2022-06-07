@@ -37,24 +37,12 @@ module.exports = {
         let controller = require('../controllers/user')
         const { check, validationResult} = require('express-validator')
 
-        //ROTA LOGIN USER
-        // app.get('/user/login', (req,res)=>{
-        // controller.loadLogin(app,req,res)
-        // }),
-        // //ROTA SIGN IN USER
-        // app.get('/user/signin', (req,res)=>{
-        //     controller.loadSignin(app,req,res)
-        // }),
-        
         //ROTA AUTH LOGIN
-        app.get('/user/login/auth',(req,res)=>{
-            controller.checkAuth(app,res,res)
-        }),
-        app.post('/user/login/auth', (req,res)=>{
+        app.post('/user/login', (req,res)=>{
             controller.authLogin(app,req,res)
         }),
         //ROTA AUTH SIGN IN
-        app.post('/user/signin/auth',[
+        app.post('/user/signin',[
             check('nome', 'Nome muito curto').isLength({min:5}),
             check('email', 'E-mail invalido'),
             check('password', 'Senha muito curta').isLength({ min:2 }),

@@ -1,21 +1,49 @@
-import React from 'react';
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import { Container, InputContainer, Input, Label, Ref, SubmitButton } from './styles';
 
 function LoginForm() {
+  const { register, handleSubmit } = useForm();
+  const { signIn } = useContext(AuthContext)
+
+  async function handleSignIn(data) {
+    await signIn(data)
+  }
+  
   return (
-    <Container>
-      <InputContainer method='post' action='http://localhost:8000/user/login/auth'>
-        <Label>E-mail</Label>
-        <Input type={'text'} name={'email'}/>
-        <Label>Senha</Label>
-        <Input type={'password'} name={'password'}/>
-        <SubmitButton type={'submit'}/>
-        <Ref href='http://localhost:3000/user/cadastrar'>
-          Cadastrar
-        </Ref>
-      </InputContainer>
-    </Container>
+    <>
+      <Container>
+        <InputContainer onSubmit={handleSubmit(handleSignIn)} >
+          <Label>E-mail</Label>
+          <Input 
+            {...register('email')}
+            id="email-address"
+            name="email"
+            type="text" //email
+            autoComplete="email"
+            required
+            placeholder="Email address"
+            />
+          <Label>Senha</Label>
+          <Input 
+            {...register('password')}
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            placeholder="Password"
+          />
+          <SubmitButton type='submit'/>
+          <Ref href='http://localhost:3000/user/cadastrar'>
+            Cadastrar
+          </Ref>
+        </InputContainer>
+      </Container>
+    </>
   );
 }
 

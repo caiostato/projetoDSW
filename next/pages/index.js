@@ -15,7 +15,7 @@ export default function Home() {
       .get("/api/pontos")
       .then((response) => setPlaces(response.data))
       .catch((err) => {
-        console.error("ops! ocorreu um erro" + err);
+        console.error("Ops! ocorreu um erro" + err);
       });
   }, []);
 
