@@ -1,24 +1,30 @@
-const { authLogin, authSignin } = require('../models/user');
-const logger = require('../../config/logger')
+const { authLogin, authSignin, getUser } = require('../models/user');
+const logger = require('../../config/logger');
+const { func } = require('joi');
 
 module.exports.authLogin = function(app,req,res,errors) {
 
     let connection = app.config.dbserver()
 
     let data = req.body
-    const user = {
+    const userRequesting = {
         email: data.email,
         password: data.password
     }
-    if(!errors){
-        authLogin(user, connection, function(error, result){
-            console.log(user)
+    if(errors.errors.length > 0){
+        authLogin(userRequesting, connection, function(error, result){
+            const userResponse = {
+                id: result[0].user_id,
+                nome: result[0].user_name,
+                email: result[0].user_email,
+                img: result[0].user_img
+            }
+
             if(!error){
-                console.log(result)
                 if(result.length > 0){
                     res.json({
                         result: '200',
-                        id:result[0].user_id
+                        user: userResponse
                     })
                 }
             }

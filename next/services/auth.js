@@ -13,10 +13,13 @@ export async function logInRequest(data) {
   const json = await response.json()
 
   return {
+    token: uuid(),
     json
   }
 }
 
+
+//fazer
 export async function signInRequest(data) {
 
   const response  = await fetch('http://localhost:8000/user/login',{

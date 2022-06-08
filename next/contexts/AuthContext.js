@@ -12,24 +12,19 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const isAuthenticated = !!user;
 
-  // useEffect(() => {
-  //   const { 'nextauth.token': token } = parseCookies()
-
-  //   if (token) {
-  //     recoverUserInformation().then(response => {
-  //       setUser(response.user)
-  //     })
-  //   }
-  // }, [])
+  console.log(user)
 
   async function logIn(data) {
     const response = await logInRequest(data)
     const status = response.json.result
-    console.log(status)
+    const token = response.token
+    const userResponse = response.json.user
 
-    // setCookie(undefined, 'nextauth.token', token, {
-    //   maxAge: 60 * 60 * 1, // 1 hour
-    // })
+    setCookie(undefined, 'nextauth.token', token, {
+      maxAge: 60 * 60 * 1, // 1 hour
+    })
+
+    setUser(userResponse)
 
     // api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
@@ -51,7 +46,8 @@ export function AuthProvider({ children }) {
   async function signIn(data) {
     const response = await signInRequest(data)
     const status = response.json.result
-    console.log(status)
+
+    console.log(response.json.user)
 
     if (status == 200){
       Router.push('/');
@@ -67,8 +63,9 @@ export function AuthProvider({ children }) {
     }
 
   }
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, logIn }}>
       {children}
     </AuthContext.Provider>
   )

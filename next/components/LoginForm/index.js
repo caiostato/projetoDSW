@@ -7,10 +7,10 @@ import { Container, InputContainer, Input, Label, Ref, SubmitButton } from './st
 
 function LoginForm() {
   const { register, handleSubmit } = useForm();
-  const { signIn } = useContext(AuthContext)
+  const { logIn } = useContext(AuthContext)
 
   async function handleSignIn(data) {
-    await signIn(data)
+    await logIn(data)
   }
   
   return (
