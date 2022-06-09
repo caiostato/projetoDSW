@@ -1,6 +1,6 @@
 module.exports = {
     authLogin : function(user,connection, callback){
-        let sql = `select user_id,user_name,user_email,user_img from user where user_email="${user.email}" and user_password="${user.password}";`
+        let sql = `SELECT user_id,user_name,user_email,user_img from user WHERE user_email="${user.email}" and user_password="${user.password}";`
         connection.query(sql,callback)
     },
     authSignin : function(user,connection, callback){

@@ -14,12 +14,7 @@ module.exports = {
         let controller = require('../controllers/pontos')
         const { check, validationResult} = require('express-validator')
 
-        //ROTA CARREGAR CADASTRAR PONTO PAGE
-        // app.get('/pontos/cadastrar', (req,res)=>{
-        // controller.loadPage(app,req,res)
-        // }),
-        //ROTA ENVIAR DADOS SOBRE CADASTRO DO PONTO
-        app.post('/pontos/cadastrar/save',[
+        app.post('/pontos/cadastrar',[
             check('nome', 'Nome muito curto').isLength({min:5}),
             check('cep', 'CEP com tamanho invalido').isLength({min:9,max:9}),
             check('address', 'Endereço muito curto').isLength({ min:8 }),
@@ -30,6 +25,17 @@ module.exports = {
         ], (req,res)=>{
             const errors = validationResult(req)
             controller.savePonto(app,req,res,errors)
+        })
+        app.put('/pontos/cadastrar',[
+            check('nome', 'Nome muito curto').isLength({min:4}),
+            check('address', 'Endereço muito curto').isLength({ min:8 }),
+            check('img','Não é URL').isURL(),
+        ], (req,res)=>{
+            const errors = validationResult(req)
+            controller.putPonto(app,req,res,errors)
+        })
+        app.delete('/pontos/cadastrar', (req,res)=>{
+            controller.deletePonto(app,req,res)
         })
     },
     user: function(app){

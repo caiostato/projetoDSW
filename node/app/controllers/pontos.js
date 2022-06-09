@@ -1,11 +1,5 @@
-const { setPonto } = require('../models/pontos');
+const { setPonto,updatePonto,delPonto } = require('../models/pontos')
 const logger = require('../../config/logger')
-
-//app.get
-// module.exports.loadPage = function(app,req,res) {
-//     // ROTA GET CADASTRAR PONTO
-//     res.render('ponto/cadastrar.ejs')
-// }
 
 module.exports.savePonto = function(app,req,res,errors) {
     //ROTA POST PONTO
@@ -39,7 +33,8 @@ module.exports.savePonto = function(app,req,res,errors) {
                 })
                 res.json({
                     result: '500',
-                    message: 'Erro na conexão com o servidor'
+                    message: error.message,
+                
                 })
             }})
     }
@@ -54,4 +49,85 @@ module.exports.savePonto = function(app,req,res,errors) {
         })
     }
 
+}
+
+module.exports.putPonto = function(app,req,res,errors){
+
+    let connection = app.config.dbserver()
+
+    let data = req.body
+        
+    let ponto = {
+        id: data.id,
+        nome: data.nome,
+        addr: data.endereco,
+        imagem:data.imagem,
+    }
+    
+    if(errors.errors.length > 0){
+        updatePonto(ponto,connection, function(error, result){
+            if(!error){
+                res.json({
+                    result: '200'
+                })
+            }
+            else {
+                logger.log({
+                    level: 'error',
+                    message: error.message
+                })
+                res.json({
+                    result: '500',
+                    message: error.message
+                })
+            }})
+    }
+    else{
+        logger.log({
+            level: 'error',
+            message: errors.errors
+        })
+        res.json({
+            result: '400',
+            message: errors.errors
+        })
+    }
+
+}
+module.exports.deletePontos = function(app,req,res,errors){
+
+    let connection = app.config.dbserver()
+
+    let data = req.body
+        
+    let id = data.id
+    
+    if(errors.errors.length > 0){
+        delPonto(id,connection, function(error, result){
+            if(!error){
+                res.json({
+                    result: '200'
+                })
+            }
+            else {
+                logger.log({
+                    level: 'error',
+                    message: error.message
+                })
+                res.json({
+                    result: '500',
+                    message: error.message
+                })
+            }})
+    }
+    else{
+        logger.log({
+            level: 'error',
+            message: errors.errors
+        })
+        res.json({
+            result: '400',
+            message: errors.errors
+        })
+    }
 }

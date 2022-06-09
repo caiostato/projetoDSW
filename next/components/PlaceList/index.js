@@ -10,7 +10,8 @@ function PlaceList({places}) {
     {places?.map((place)=>{
       return (
         <PlaceItem 
-          key={place.ponto_id} 
+          key={place.ponto_id}
+          id={place.ponto_id}
           nome={place.ponto_nome} 
           addr={place.ponto_addr} 
           url={place.ponto_img}

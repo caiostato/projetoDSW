@@ -1,13 +1,13 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useContext } from 'react';
-import { AuthContext } from '../../contexts/AuthContext';
 
+import { Context } from '../../contexts/Context';
 import { Container, InputContainer, Input, Label, Ref, SubmitButton } from './styles';
 
 function LoginForm() {
   const { register, handleSubmit } = useForm();
-  const { logIn } = useContext(AuthContext)
+  const { logIn } = useContext(Context)
 
   async function handleSignIn(data) {
     await logIn(data)

@@ -1,4 +1,4 @@
-const { authLogin, authSignin, getUser } = require('../models/user');
+const { authLogin, authSignin } = require('../models/user');
 const logger = require('../../config/logger');
 const { func } = require('joi');
 
@@ -35,7 +35,7 @@ module.exports.authLogin = function(app,req,res,errors) {
                 })
                 res.json({
                     result: '500',
-                    message: 'Erro na conexão com o servidor'
+                    message: error.message
                 })
             }
             })
@@ -80,7 +80,7 @@ module.exports.authSignin = function(app,req,res,errors) {
                 })
                 res.json({
                     result: '500',
-                    message: 'Erro na conexão com o servidor'
+                    message: error.message
                 })
             }
         })
