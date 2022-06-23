@@ -19,7 +19,7 @@ export async function logInRequest(data) {
 }
 export async function signInRequest(data) {
 
-  const response  = await fetch('http://localhost:8000/user/login',{
+  const response  = await fetch('http://localhost:8000/user/signin',{
     method:'POST',
     headers: {
       Accept: 'application/json',
